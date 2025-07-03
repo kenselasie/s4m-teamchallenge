@@ -99,6 +99,7 @@ const PDFSearch = () => {
             />
             <Button
               variant="contained"
+              data-test="search-button"
               onClick={handleSearch}
               disabled={!searchQuery.trim() || isLoading}
               startIcon={<Search />}

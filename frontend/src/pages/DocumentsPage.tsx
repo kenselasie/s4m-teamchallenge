@@ -1,8 +1,4 @@
-/**
- * Documents List Page
- */
-
-import React, { useState } from "react";
+import * as React from "react";
 import { useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import PDFList from "../components/PDFList";
@@ -11,7 +7,7 @@ import { PDF } from "../services/api";
 
 const DocumentsPage = () => {
   const [, setSearchParams] = useSearchParams();
-  const [selectedPDF, setSelectedPDF] = useState<PDF | null>(null);
+  const [selectedPDF, setSelectedPDF] = React.useState<PDF | null>(null);
 
   const handleViewPDF = (pdf: PDF) => {
     setSelectedPDF(pdf);

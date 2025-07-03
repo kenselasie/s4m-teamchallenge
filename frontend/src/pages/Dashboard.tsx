@@ -7,9 +7,8 @@ import {
   Grid,
   Button,
 } from "@mui/material";
-import { CloudUpload, List, Search, PictureAsPdf } from "@mui/icons-material";
+import { CloudUpload, List, Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { usePDFs } from "../hooks/usePDFs";
 import Layout from "../components/Layout";
 
 const Dashboard: React.FC = () => {
@@ -53,7 +52,7 @@ const Dashboard: React.FC = () => {
             }}
           >
             <Typography variant="h4" gutterBottom align="center">
-              Welcome to PDF Parser
+              Welcome to the Dashboard
             </Typography>
           </Box>
         </Box>
