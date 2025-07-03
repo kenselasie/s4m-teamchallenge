@@ -10,18 +10,19 @@ import { useNotification } from '../context/NotificationContext';
 export const pdfKeys = {
   all: ['pdfs'] as const,
   lists: () => [...pdfKeys.all, 'list'] as const,
-  list: (page: number, size: number) => [...pdfKeys.lists(), { page, size }] as const,
+  list: (params: { page: number; size: number }) => [...pdfKeys.lists(), params] as const,
   details: () => [...pdfKeys.all, 'detail'] as const,
   detail: (id: number) => [...pdfKeys.details(), id] as const,
   chunks: (id: number) => [...pdfKeys.detail(id), 'chunks'] as const,
-  chunkList: (id: number, page: number, size: number) => [...pdfKeys.chunks(id), { page, size }] as const,
-  search: (query: string, pdfId?: number) => [...pdfKeys.all, 'search', { query, pdfId }] as const,
+  chunkList: (params: { id: number; page: number; size: number }) => [...pdfKeys.chunks(params.id), { page: params.page, size: params.size }] as const,
+  search: (params: { query: string; pdfId?: number; page?: number; size?: number }) => [...pdfKeys.all, 'search', params] as const,
 };
 
 // Hook for fetching PDFs list
-export const usePDFs = (page: number = 1, size: number = 10) => {
+export const usePDFs = (params: { page?: number; size?: number } = {}) => {
+  const { page = 1, size = 10 } = params;
   return useQuery<PDFListResponse>({
-    queryKey: pdfKeys.list(page, size),
+    queryKey: pdfKeys.list({ page, size }),
     queryFn: () => apiClient.getPDFs(page, size),
     placeholderData: (previousData) => previousData,
   });
@@ -37,9 +38,10 @@ export const usePDF = (id: number) => {
 };
 
 // Hook for fetching PDF chunks
-export const usePDFChunks = (pdfId: number, page: number = 1, size: number = 10) => {
+export const usePDFChunks = (params: { pdfId: number; page?: number; size?: number }) => {
+  const { pdfId, page = 1, size = 10 } = params;
   return useQuery<PDFChunkListResponse>({
-    queryKey: pdfKeys.chunkList(pdfId, page, size),
+    queryKey: pdfKeys.chunkList({ id: pdfId, page, size }),
     queryFn: () => apiClient.getPDFChunks(pdfId, page, size),
     enabled: !!pdfId,
     placeholderData: (previousData) => previousData,
@@ -47,9 +49,10 @@ export const usePDFChunks = (pdfId: number, page: number = 1, size: number = 10)
 };
 
 // Hook for searching PDF content
-export const useSearchPDFContent = (query: string, pdfId?: number, page: number = 1, size: number = 20) => {
+export const useSearchPDFContent = (params: { query: string; pdfId?: number; page?: number; size?: number }) => {
+  const { query, pdfId, page = 1, size = 20 } = params;
   return useQuery<PDFChunkSearchResponse>({
-    queryKey: pdfKeys.search(query, pdfId),
+    queryKey: pdfKeys.search({ query, pdfId, page, size }),
     queryFn: () => apiClient.searchPDFContent(query, pdfId, page, size),
     enabled: !!query && query.length > 0,
     placeholderData: (previousData) => previousData,

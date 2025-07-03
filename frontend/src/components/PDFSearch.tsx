@@ -15,19 +15,19 @@ import {
 import { Search, PictureAsPdf, Clear } from "@mui/icons-material";
 import { useSearchPDFContent } from "../hooks/usePDFs";
 
-const PDFSearch: React.FC = () => {
+const PDFSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeQuery, setActiveQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 20;
+  const pageSize = 10;
 
   // Only search when there's an active query
-  const { data: searchResults, isLoading } = useSearchPDFContent(
-    activeQuery,
-    undefined,
-    currentPage,
-    pageSize
-  );
+  const { data: searchResults, isLoading } = useSearchPDFContent({
+    query: activeQuery,
+    pdfId: undefined,
+    page: currentPage,
+    size: pageSize,
+  });
 
   // Handle search
   const handleSearch = useCallback(() => {

@@ -1,7 +1,3 @@
-/**
- * PDF Search Page
- */
-
 import React from "react";
 import Layout from "../components/Layout";
 import PDFSearch from "../components/PDFSearch";

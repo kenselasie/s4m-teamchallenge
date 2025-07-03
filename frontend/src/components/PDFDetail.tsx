@@ -42,11 +42,11 @@ const PDFDetail: React.FC<PDFDetailProps> = ({ pdf, onBack }) => {
   const { data: pdfDetail } = usePDF(pdf.id);
 
   // Load PDF chunks with pagination
-  const { data: chunksResponse, isLoading: chunksLoading } = usePDFChunks(
-    pdf.id,
-    currentPage,
-    chunksPerPage
-  );
+  const { data: chunksResponse, isLoading: chunksLoading } = usePDFChunks({
+    pdfId: pdf.id,
+    page: currentPage,
+    size: chunksPerPage,
+  });
 
   // Handle chunk page change - load chunks on demand
   const handleChunkPageChange = useCallback(

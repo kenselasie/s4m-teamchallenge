@@ -38,7 +38,7 @@ const PDFList = ({ onViewPDF }: PDFListProps) => {
     data: pdfResponse,
     isLoading,
     error,
-  } = usePDFs(currentPage, pageSize);
+  } = usePDFs({ page: currentPage, size: pageSize });
   const deletePDF = useDeletePDF();
 
   // Handle page change
