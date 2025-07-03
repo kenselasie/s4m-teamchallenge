@@ -2,7 +2,7 @@
  * API service layer for communicating with the backend
  */
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = "http://localhost:8000";
 
 // Types for API responses
 export interface PDF {
@@ -13,8 +13,8 @@ export interface PDF {
   file_size: number;
   total_pages: number;
   processing_status: string;
-  processing_error?: string;
-  author?: string;
+  processing_error?: string | null;
+  author?: string | null;
   subject?: string;
   keywords?: string;
   file_size_mb: number;
@@ -82,21 +82,21 @@ class ApiClient {
     options: RequestInit = {}
   ): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
-    
+
     const config: RequestInit = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options.headers,
       },
       ...options,
     };
 
     // Add auth token if available
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers = {
         ...config.headers,
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       };
     }
 
@@ -104,26 +104,31 @@ class ApiClient {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        errorData.detail || `HTTP error! status: ${response.status}`
+      );
     }
 
     return response.json();
   }
 
   // Authentication
-  async login(username: string, password: string): Promise<{ access_token: string; token_type: string }> {
+  async login(
+    username: string,
+    password: string
+  ): Promise<{ access_token: string; token_type: string }> {
     const formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);
+    formData.append("username", username);
+    formData.append("password", password);
 
     const response = await fetch(`${this.baseURL}/token`, {
-      method: 'POST',
+      method: "POST",
       body: formData,
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.detail || 'Login failed');
+      throw new Error(errorData.detail || "Login failed");
     }
 
     return response.json();
@@ -132,23 +137,23 @@ class ApiClient {
   // PDF endpoints
   async uploadPDF(file: File, title?: string): Promise<PDF> {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
     if (title) {
-      formData.append('title', title);
+      formData.append("title", title);
     }
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     const response = await fetch(`${this.baseURL}/api/pdfs/upload`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        ...(token && { 'Authorization': `Bearer ${token}` }),
+        ...(token && { Authorization: `Bearer ${token}` }),
       },
       body: formData,
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.detail || 'Upload failed');
+      throw new Error(errorData.detail || "Upload failed");
     }
 
     return response.json();
@@ -156,7 +161,9 @@ class ApiClient {
 
   async getPDFs(page: number = 1, size: number = 10): Promise<PDFListResponse> {
     const skip = (page - 1) * size;
-    return this.request<PDFListResponse>(`/api/pdfs/?skip=${skip}&limit=${size}`);
+    return this.request<PDFListResponse>(
+      `/api/pdfs/?skip=${skip}&limit=${size}`
+    );
   }
 
   async getPDF(id: number): Promise<PDFDetailResponse> {
@@ -186,17 +193,19 @@ class ApiClient {
       skip: skip.toString(),
       limit: size.toString(),
     });
-    
+
     if (pdfId) {
-      params.append('pdf_id', pdfId.toString());
+      params.append("pdf_id", pdfId.toString());
     }
 
-    return this.request<PDFChunkSearchResponse>(`/api/pdfs/search/content?${params}`);
+    return this.request<PDFChunkSearchResponse>(
+      `/api/pdfs/search/content?${params}`
+    );
   }
 
   async deletePDF(id: number): Promise<{ message: string }> {
     return this.request<{ message: string }>(`/api/pdfs/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   }
 
