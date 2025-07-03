@@ -1,22 +1,68 @@
+"""
+Database configuration and session management.
+"""
+
+import os
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from .models.base import Base
 
-# In a real application, this would come from environment variables
-SQLALCHEMY_DATABASE_URL = "sqlite:///./app.db"
-
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False}  # Only needed for SQLite
+# Database URL from environment or default to SQLite
+DATABASE_URL = os.getenv(
+    "DATABASE_URL", 
+    "sqlite:///./app.db"
 )
+
+# Create engine with appropriate configuration
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={"check_same_thread": False},  # Only needed for SQLite
+        echo=False  # Set to True for SQL logging in development
+    )
+else:
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,  # Verify connections before use
+        pool_recycle=300,    # Recycle connections after 5 minutes
+        echo=False
+    )
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
 
-# Dependency to get DB session
 def get_db():
+    """
+    Dependency to get database session.
+    Ensures proper session cleanup.
+    """
     db = SessionLocal()
     try:
         yield db
     finally:
-        db.close() 
+        db.close()
+
+
+def create_tables():
+    """Create all tables."""
+    Base.metadata.create_all(bind=engine)
+
+
+def drop_tables():
+    """Drop all tables - use with caution!"""
+    Base.metadata.drop_all(bind=engine)
+
+
+def seed_demo_user():
+    """Seed the demo user into the database."""
+    from .services.auth_service import AuthService
+    
+    db = SessionLocal()
+    try:
+        auth_service = AuthService(db)
+        demo_user = auth_service.create_demo_user()
+        print(f"Demo user created/verified: {demo_user.username}")
+    except Exception as e:
+        print(f"Error creating demo user: {e}")
+    finally:
+        db.close()

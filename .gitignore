@@ -25,6 +25,7 @@ wheels/
 htmlcov/
 .env
 venv/
+.venv/
 
 # Node
 node_modules/
@@ -66,3 +67,5 @@ coverage/
 
 # Vite
 .vite/ 
+
+CHECKLIST.md
