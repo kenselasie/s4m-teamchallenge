@@ -1,15 +1,9 @@
-"""
-PDF Chunk schemas for request/response validation.
-"""
-
 from typing import Optional, Dict, Any, List
 from pydantic import BaseModel, Field
 from app.schemas.base import BaseSchema, TimestampMixin
 
 
-class PDFChunkBase(BaseModel):
-    """Base PDF chunk schema."""
-    
+class PDFChunkBase(BaseModel):    
     chunk_number: int = Field(..., ge=1, description="Sequential chunk number")
     page_number: int = Field(..., ge=1, description="Original page number")
     content: str = Field(..., min_length=1, description="Chunk content")
@@ -24,7 +18,6 @@ class PDFChunkCreate(PDFChunkBase):
 
 
 class PDFChunkResponse(BaseSchema, TimestampMixin):
-    """Schema for PDF chunk response."""
     
     id: int
     pdf_id: int
@@ -40,9 +33,7 @@ class PDFChunkResponse(BaseSchema, TimestampMixin):
     preview: str
 
 
-class PDFChunkListResponse(BaseModel):
-    """Schema for paginated PDF chunk list response."""
-    
+class PDFChunkListResponse(BaseModel):    
     items: List[PDFChunkResponse]
     total: int
     page: int
@@ -51,9 +42,7 @@ class PDFChunkListResponse(BaseModel):
     pdf_id: int
 
 
-class PDFChunkSearchResponse(BaseModel):
-    """Schema for paginated search results response."""
-    
+class PDFChunkSearchResponse(BaseModel):    
     items: List[PDFChunkResponse]
     total: int
     page: int

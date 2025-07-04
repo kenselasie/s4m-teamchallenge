@@ -1,7 +1,3 @@
-"""
-Database configuration and session management.
-"""
-
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -34,17 +30,14 @@ def get_db():
 
 
 def create_tables():
-    """Create all tables."""
     Base.metadata.create_all(bind=engine)
 
 
 def drop_tables():
-    """Drop all tables - use with caution!"""
     Base.metadata.drop_all(bind=engine)
 
 
 def seed_demo_user():
-    """Seed the demo user into the database."""
     from .services.auth_service import AuthService
     
     db = SessionLocal()

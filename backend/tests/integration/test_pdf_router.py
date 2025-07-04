@@ -9,8 +9,6 @@ from io import BytesIO
 
 
 class TestPDFRouterIntegration:
-    """Integration tests for PDF router endpoints."""
-
     def test_get_pdfs_empty_list(self, client, auth_headers):
         """Test getting empty PDF list."""
         response = client.get("/api/pdfs/", headers=auth_headers)

@@ -1,6 +1,4 @@
-"""
-Authentication schemas for JWT token handling.
-"""
+
 
 from typing import Optional
 from pydantic import BaseModel

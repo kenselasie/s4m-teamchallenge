@@ -3,10 +3,7 @@ from sqlalchemy.orm import Session, joinedload
 from app.models.pdf import PDF
 from app.repositories.base import BaseRepository
 
-
-class PDFRepository(BaseRepository[PDF]):
-    """Repository for PDF model operations."""
-    
+class PDFRepository(BaseRepository[PDF]):    
     def __init__(self, db: Session):
         super().__init__(PDF, db)
     

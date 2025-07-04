@@ -1,7 +1,3 @@
-"""
-PDF Chunk repository for chunk-specific database operations.
-"""
-
 from typing import Optional, List
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_, desc
@@ -9,9 +5,7 @@ from app.models.pdf_chunk import PDFChunk
 from app.repositories.base import BaseRepository
 
 
-class PDFChunkRepository(BaseRepository[PDFChunk]):
-    """Repository for PDFChunk model operations."""
-    
+class PDFChunkRepository(BaseRepository[PDFChunk]):    
     def __init__(self, db: Session):
         super().__init__(PDFChunk, db)
     

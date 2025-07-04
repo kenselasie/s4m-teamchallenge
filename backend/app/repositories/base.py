@@ -1,7 +1,3 @@
-"""
-Base repository class with common CRUD operations.
-"""
-
 from typing import Generic, TypeVar, Type, Optional, List, Dict, Any
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_, desc, asc

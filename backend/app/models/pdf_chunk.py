@@ -1,26 +1,16 @@
-"""
-PDF Chunk model for storing parsed PDF content sections.
-"""
-
 from sqlalchemy import Column, String, Integer, ForeignKey, Text, JSON
 from sqlalchemy.orm import relationship
 from app.models.base import BaseModel
 
 
-class PDFChunk(BaseModel):
-    """PDF Chunk model for storing parsed content sections."""
-    
+class PDFChunk(BaseModel):    
     __tablename__ = "pdf_chunks"
-    
+
     pdf_id = Column(Integer, ForeignKey("pdfs.id"), nullable=False, index=True)
     chunk_number = Column(Integer, nullable=False)  # Sequential chunk number
     page_number = Column(Integer, nullable=False, index=True)  # Original page number
-    
-    # Content
     content = Column(Text, nullable=False)
     content_type = Column(String(50), default="text")  # text, image, table, etc.
-    
-    # Metadata
     word_count = Column(Integer, default=0)
     character_count = Column(Integer, default=0)
     

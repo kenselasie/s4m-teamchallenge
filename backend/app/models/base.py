@@ -1,7 +1,3 @@
-"""
-Base model class with common fields and functionality.
-"""
-
 from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base
@@ -10,7 +6,6 @@ Base = declarative_base()
 
 
 def utc_now():
-    """Return current UTC datetime."""
     return datetime.now(timezone.utc)
 
 

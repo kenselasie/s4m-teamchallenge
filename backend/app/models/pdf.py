@@ -1,15 +1,8 @@
-"""
-PDF model for storing PDF metadata and information.
-"""
-
 from sqlalchemy import Column, String, Integer, Text
 from sqlalchemy.orm import relationship
 from app.models.base import BaseModel
 
-
-class PDF(BaseModel):
-    """PDF model for storing PDF metadata."""
-    
+class PDF(BaseModel):    
     __tablename__ = "pdfs"
     
     title = Column(String(255), nullable=False, index=True)

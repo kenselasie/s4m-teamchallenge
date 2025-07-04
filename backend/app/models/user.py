@@ -1,14 +1,9 @@
-"""
-User model for authentication.
-"""
-
 from sqlalchemy import Column, String, Boolean
 from app.models.base import BaseModel
 
 
 class User(BaseModel):
-    """User model for authentication."""
-    
+        
     __tablename__ = "users"
     
     username = Column(String(255), unique=True, index=True, nullable=False)

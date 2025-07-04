@@ -1,21 +1,14 @@
-"""
-PDF schemas for request/response validation.
-"""
-
 from typing import Optional, List
 from pydantic import BaseModel, Field
 from app.schemas.base import BaseSchema, TimestampMixin
 from app.schemas.pdf_chunk import PDFChunkResponse
 
 
-class PDFBase(BaseModel):
-    """Base PDF schema."""
-    
+class PDFBase(BaseModel):    
     title: str = Field(..., min_length=1, max_length=255, description="PDF title")
 
 
 class PDFCreate(PDFBase):
-    """Schema for creating a new PDF."""
     
     filename: str = Field(..., description="Original filename")
     file_size: int = Field(..., gt=0, description="File size in bytes")
@@ -27,18 +20,14 @@ class PDFCreate(PDFBase):
     keywords: Optional[str] = Field(None, description="PDF keywords")
 
 
-class PDFUpdate(BaseModel):
-    """Schema for updating PDF metadata."""
-    
+class PDFUpdate(BaseModel):    
     title: Optional[str] = Field(None, min_length=1, max_length=255)
     author: Optional[str] = Field(None, max_length=255)
     subject: Optional[str] = Field(None, max_length=500)
     keywords: Optional[str] = Field(None)
 
 
-class PDFResponse(BaseSchema, TimestampMixin):
-    """Schema for PDF response."""
-    
+class PDFResponse(BaseSchema, TimestampMixin):    
     id: int
     title: str
     filename: str
@@ -60,9 +49,7 @@ class PDFResponse(BaseSchema, TimestampMixin):
     # Remove owner info for simplified PDF-only functionality
 
 
-class PDFListResponse(BaseModel):
-    """Schema for paginated PDF list response."""
-    
+class PDFListResponse(BaseModel):    
     items: List[PDFResponse]
     total: int
     page: int
@@ -71,6 +58,4 @@ class PDFListResponse(BaseModel):
 
 
 class PDFDetailResponse(PDFResponse):
-    """Schema for detailed PDF response with chunks."""
-    
     chunks: List[PDFChunkResponse] = []

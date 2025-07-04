@@ -1,7 +1,3 @@
-"""
-Base schema classes with common configurations.
-"""
-
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
@@ -17,8 +13,6 @@ class BaseSchema(BaseModel):
     )
 
 
-class TimestampMixin(BaseModel):
-    """Mixin for timestamp fields."""
-    
+class TimestampMixin(BaseModel):    
     created_at: datetime
     updated_at: datetime
