@@ -1,7 +1,3 @@
-/**
- * API service layer for communicating with the backend
- */
-
 const API_BASE_URL = "http://localhost:8000";
 
 // Types for API responses
@@ -207,10 +203,6 @@ class ApiClient {
     return this.request<{ message: string }>(`/api/pdfs/${id}`, {
       method: "DELETE",
     });
-  }
-
-  async getPDFStats(id: number): Promise<any> {
-    return this.request<any>(`/api/pdfs/${id}/stats`);
   }
 }
 

@@ -2,20 +2,37 @@
  * Custom hooks for PDF operations using TanStack Query
  */
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, PDF, PDFListResponse, PDFDetailResponse, PDFChunkListResponse, PDFChunkSearchResponse } from '../services/api';
-import { useNotification } from '../context/NotificationContext';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  apiClient,
+  PDF,
+  PDFListResponse,
+  PDFDetailResponse,
+  PDFChunkListResponse,
+  PDFChunkSearchResponse,
+} from "../services/api";
+import { useNotification } from "../context/NotificationContext";
 
 // Query keys
 export const pdfKeys = {
-  all: ['pdfs'] as const,
-  lists: () => [...pdfKeys.all, 'list'] as const,
-  list: (params: { page: number; size: number }) => [...pdfKeys.lists(), params] as const,
-  details: () => [...pdfKeys.all, 'detail'] as const,
+  all: ["pdfs"] as const,
+  lists: () => [...pdfKeys.all, "list"] as const,
+  list: (params: { page: number; size: number }) =>
+    [...pdfKeys.lists(), params] as const,
+  details: () => [...pdfKeys.all, "detail"] as const,
   detail: (id: number) => [...pdfKeys.details(), id] as const,
-  chunks: (id: number) => [...pdfKeys.detail(id), 'chunks'] as const,
-  chunkList: (params: { id: number; page: number; size: number }) => [...pdfKeys.chunks(params.id), { page: params.page, size: params.size }] as const,
-  search: (params: { query: string; pdfId?: number; page?: number; size?: number }) => [...pdfKeys.all, 'search', params] as const,
+  chunks: (id: number) => [...pdfKeys.detail(id), "chunks"] as const,
+  chunkList: (params: { id: number; page: number; size: number }) =>
+    [
+      ...pdfKeys.chunks(params.id),
+      { page: params.page, size: params.size },
+    ] as const,
+  search: (params: {
+    query: string;
+    pdfId?: number;
+    page?: number;
+    size?: number;
+  }) => [...pdfKeys.all, "search", params] as const,
 };
 
 // Hook for fetching PDFs list
@@ -38,7 +55,11 @@ export const usePDF = (id: number) => {
 };
 
 // Hook for fetching PDF chunks
-export const usePDFChunks = (params: { pdfId: number; page?: number; size?: number }) => {
+export const usePDFChunks = (params: {
+  pdfId: number;
+  page?: number;
+  size?: number;
+}) => {
   const { pdfId, page = 1, size = 10 } = params;
   return useQuery<PDFChunkListResponse>({
     queryKey: pdfKeys.chunkList({ id: pdfId, page, size }),
@@ -49,7 +70,12 @@ export const usePDFChunks = (params: { pdfId: number; page?: number; size?: numb
 };
 
 // Hook for searching PDF content
-export const useSearchPDFContent = (params: { query: string; pdfId?: number; page?: number; size?: number }) => {
+export const useSearchPDFContent = (params: {
+  query: string;
+  pdfId?: number;
+  page?: number;
+  size?: number;
+}) => {
   const { query, pdfId, page = 1, size = 20 } = params;
   return useQuery<PDFChunkSearchResponse>({
     queryKey: pdfKeys.search({ query, pdfId, page, size }),
@@ -65,15 +91,15 @@ export const useUploadPDF = () => {
   const { showNotification } = useNotification();
 
   return useMutation<PDF, Error, { file: File; title?: string }>({
-    mutationFn: ({ file, title }: { file: File; title?: string }) => 
+    mutationFn: ({ file, title }: { file: File; title?: string }) =>
       apiClient.uploadPDF(file, title),
     onSuccess: () => {
       // Invalidate and refetch PDF lists
       queryClient.invalidateQueries({ queryKey: pdfKeys.lists() });
-      showNotification('PDF uploaded and processed successfully!', 'success');
+      showNotification("PDF uploaded and processed successfully!", "success");
     },
     onError: (error: Error) => {
-      showNotification(`Upload failed: ${error.message}`, 'error');
+      showNotification(`Upload failed: ${error.message}`, "error");
     },
   });
 };
@@ -91,19 +117,10 @@ export const useDeletePDF = () => {
       queryClient.removeQueries({ queryKey: pdfKeys.chunks(deletedId) });
       // Invalidate lists
       queryClient.invalidateQueries({ queryKey: pdfKeys.lists() });
-      showNotification('PDF deleted successfully!', 'success');
+      showNotification("PDF deleted successfully!", "success");
     },
     onError: (error: Error) => {
-      showNotification(`Delete failed: ${error.message}`, 'error');
+      showNotification(`Delete failed: ${error.message}`, "error");
     },
-  });
-};
-
-// Hook for PDF stats
-export const usePDFStats = (id: number) => {
-  return useQuery<any>({
-    queryKey: [...pdfKeys.detail(id), 'stats'],
-    queryFn: () => apiClient.getPDFStats(id),
-    enabled: !!id,
   });
 };
