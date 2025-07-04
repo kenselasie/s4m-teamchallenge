@@ -45,6 +45,11 @@ class PDFChunkRepository(BaseRepository[PDFChunk]):
             PDFChunk.content.ilike(f"%{search_term}%")
         ).count()
     
+    def count_by_pdf(self, pdf_id: int) -> int:
+        """Count chunks for a specific PDF."""
+        return self.db.query(PDFChunk).filter(
+            PDFChunk.pdf_id == pdf_id
+        ).count()
     
     def bulk_create(self, chunks_data: List[dict]) -> List[PDFChunk]:
         """Create multiple chunks in bulk."""

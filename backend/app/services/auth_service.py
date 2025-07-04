@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from passlib.context import CryptContext
@@ -7,7 +8,7 @@ from app.models.user import User
 from app.repositories.user import UserRepository
 
 # Security configuration
-SECRET_KEY = "your-secret-key-for-development"  # Should be from environment
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-for-development")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
