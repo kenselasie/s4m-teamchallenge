@@ -12,11 +12,12 @@ async def lifespan(app: FastAPI):
     seed_demo_user()
     yield
 
+
 app = FastAPI(
     title="Code Challenge API",
     description="API for uploading, parsing, and searching PDF documents",
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 app.add_middleware(
     CORSMiddleware,
@@ -29,6 +30,7 @@ app.add_middleware(
 app.include_router(pdf_router)
 app.include_router(auth_router)
 
+
 @app.get("/")
 async def root():
     return {"message": "PDF Parser API", "version": "1.0.0"}
@@ -36,4 +38,4 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy"} 
+    return {"status": "healthy"}

@@ -127,6 +127,14 @@ python -m pytest tests/integration
 
 This project implements a **Clean Architecture** with **Layered Service** pattern, following traditional separation of concerns for maintainability.
 
+## API DOCs
+
+The API docs can be accessed here
+
+```bash
+http://localhost:8000/docs
+```
+
 ## Backend Architecture
 
 ### Layer Structure:

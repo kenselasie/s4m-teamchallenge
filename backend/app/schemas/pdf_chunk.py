@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from app.schemas.base import BaseSchema, TimestampMixin
 
 
-class PDFChunkBase(BaseModel):    
+class PDFChunkBase(BaseModel):
     chunk_number: int = Field(..., ge=1, description="Sequential chunk number")
     page_number: int = Field(..., ge=1, description="Original page number")
     content: str = Field(..., min_length=1, description="Chunk content")
@@ -11,14 +11,14 @@ class PDFChunkBase(BaseModel):
 
 
 class PDFChunkCreate(PDFChunkBase):
-    """Schema for creating a new PDF chunk."""
-    
     pdf_id: int = Field(..., description="PDF ID this chunk belongs to")
-    chunk_metadata: Optional[Dict[str, Any]] = Field(None, description="Additional metadata")
+    chunk_metadata: Optional[Dict[str, Any]] = Field(
+        None, description="Additional metadata"
+    )
 
 
 class PDFChunkResponse(BaseSchema, TimestampMixin):
-    
+
     id: int
     pdf_id: int
     chunk_number: int
@@ -28,12 +28,12 @@ class PDFChunkResponse(BaseSchema, TimestampMixin):
     word_count: int
     character_count: int
     chunk_metadata: Optional[Dict[str, Any]] = None
-    
+
     # Computed properties
     preview: str
 
 
-class PDFChunkListResponse(BaseModel):    
+class PDFChunkListResponse(BaseModel):
     items: List[PDFChunkResponse]
     total: int
     page: int
@@ -42,7 +42,7 @@ class PDFChunkListResponse(BaseModel):
     pdf_id: int
 
 
-class PDFChunkSearchResponse(BaseModel):    
+class PDFChunkSearchResponse(BaseModel):
     items: List[PDFChunkResponse]
     total: int
     page: int

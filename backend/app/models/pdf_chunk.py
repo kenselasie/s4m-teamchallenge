@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from app.models.base import BaseModel
 
 
-class PDFChunk(BaseModel):    
+class PDFChunk(BaseModel):
     __tablename__ = "pdf_chunks"
 
     pdf_id = Column(Integer, ForeignKey("pdfs.id"), nullable=False, index=True)
@@ -13,16 +13,16 @@ class PDFChunk(BaseModel):
     content_type = Column(String(50), default="text")  # text, image, table, etc.
     word_count = Column(Integer, default=0)
     character_count = Column(Integer, default=0)
-    
+
     # Additional metadata stored as JSON
     chunk_metadata = Column(JSON, nullable=True)
-    
+
     # Relationships
     pdf = relationship("PDF", back_populates="chunks")
-    
+
     def __repr__(self):
         return f"<PDFChunk(pdf_id={self.pdf_id}, chunk={self.chunk_number}, page={self.page_number})>"
-    
+
     @property
     def preview(self) -> str:
         """Return a preview of the content (first 100 characters)."""
