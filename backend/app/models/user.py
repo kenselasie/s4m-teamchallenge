@@ -3,7 +3,7 @@ User model for authentication.
 """
 
 from sqlalchemy import Column, String, Boolean
-from .base import BaseModel
+from app.models.base import BaseModel
 
 
 class User(BaseModel):

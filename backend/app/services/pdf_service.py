@@ -8,10 +8,10 @@ from typing import List, Optional, Dict, Any
 from fastapi import UploadFile
 import pdfplumber
 from sqlalchemy.orm import Session
-from ..models.pdf import PDF
-from ..models.pdf_chunk import PDFChunk
-from ..repositories.pdf import PDFRepository
-from ..repositories.pdf_chunk import PDFChunkRepository
+from app.models.pdf import PDF
+from app.models.pdf_chunk import PDFChunk
+from app.repositories.pdf import PDFRepository
+from app.repositories.pdf_chunk import PDFChunkRepository
 
 
 class PDFService:
@@ -200,20 +200,3 @@ class PDFService:
         # Delete from database (chunks will be deleted via cascade)
         self.pdf_repo.delete(pdf_id)
         return True
-    
-    def get_pdf_stats(self, pdf_id: int) -> Dict[str, Any]:
-        """Get PDF statistics."""
-        pdf = self.pdf_repo.get(pdf_id)
-        if not pdf:
-            return {}
-        
-        chunk_stats = self.chunk_repo.get_content_stats(pdf_id)
-        
-        return {
-            "pdf_id": pdf_id,
-            "title": pdf.title,
-            "total_pages": pdf.total_pages,
-            "file_size_mb": pdf.file_size_mb,
-            "processing_status": pdf.processing_status,
-            **chunk_stats
-        }

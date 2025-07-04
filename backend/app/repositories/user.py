@@ -4,8 +4,8 @@ User repository for user-specific database operations.
 
 from typing import Optional
 from sqlalchemy.orm import Session
-from ..models.user import User
-from .base import BaseRepository
+from app.models.user import User
+from app.repositories.base import BaseRepository
 
 
 class UserRepository(BaseRepository[User]):

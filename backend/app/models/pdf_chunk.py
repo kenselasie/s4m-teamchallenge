@@ -4,7 +4,7 @@ PDF Chunk model for storing parsed PDF content sections.
 
 from sqlalchemy import Column, String, Integer, ForeignKey, Text, JSON
 from sqlalchemy.orm import relationship
-from .base import BaseModel
+from app.models.base import BaseModel
 
 
 class PDFChunk(BaseModel):
@@ -39,8 +39,3 @@ class PDFChunk(BaseModel):
         if len(self.content) <= 100:
             return self.content
         return self.content[:100] + "..."
-    
-    def update_stats(self):
-        """Update word and character counts."""
-        self.character_count = len(self.content)
-        self.word_count = len(self.content.split())

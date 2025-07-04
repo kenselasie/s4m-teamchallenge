@@ -1,12 +1,8 @@
-"""
-PDF repository for PDF-specific database operations.
-"""
-
 from typing import Optional, List
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import and_, or_, desc
-from ..models.pdf import PDF
-from .base import BaseRepository
+from app.models.pdf import PDF
+from app.repositories.base import BaseRepository
 
 
 class PDFRepository(BaseRepository[PDF]):

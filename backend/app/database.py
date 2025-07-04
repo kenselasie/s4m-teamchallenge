@@ -13,21 +13,11 @@ DATABASE_URL = os.getenv(
     "sqlite:///./app.db"
 )
 
-# Create engine with appropriate configuration
-if DATABASE_URL.startswith("sqlite"):
-    engine = create_engine(
+engine = create_engine(
         DATABASE_URL,
         connect_args={"check_same_thread": False},  # Only needed for SQLite
         echo=False  # Set to True for SQL logging in development
     )
-else:
-    engine = create_engine(
-        DATABASE_URL,
-        pool_pre_ping=True,  # Verify connections before use
-        pool_recycle=300,    # Recycle connections after 5 minutes
-        echo=False
-    )
-
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 

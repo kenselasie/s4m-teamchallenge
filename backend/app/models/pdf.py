@@ -4,7 +4,7 @@ PDF model for storing PDF metadata and information.
 
 from sqlalchemy import Column, String, Integer, Text
 from sqlalchemy.orm import relationship
-from .base import BaseModel
+from app.models.base import BaseModel
 
 
 class PDF(BaseModel):

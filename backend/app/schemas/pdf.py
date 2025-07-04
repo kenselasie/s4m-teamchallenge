@@ -4,8 +4,8 @@ PDF schemas for request/response validation.
 
 from typing import Optional, List
 from pydantic import BaseModel, Field
-from .base import BaseSchema, TimestampMixin
-from .pdf_chunk import PDFChunkResponse
+from app.schemas.base import BaseSchema, TimestampMixin
+from app.schemas.pdf_chunk import PDFChunkResponse
 
 
 class PDFBase(BaseModel):

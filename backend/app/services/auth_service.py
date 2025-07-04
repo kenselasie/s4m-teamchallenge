@@ -7,8 +7,8 @@ from typing import Optional
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
-from ..models.user import User
-from ..repositories.user import UserRepository
+from app.models.user import User
+from app.repositories.user import UserRepository
 
 # Security configuration
 SECRET_KEY = "your-secret-key-for-development"  # Should be from environment
