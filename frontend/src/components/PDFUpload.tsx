@@ -124,6 +124,7 @@ const PDFUpload = () => {
           id="pdf-upload-input"
           type="file"
           onChange={handleFileChange}
+          data-testid="pdf-upload-input"
         />
         <label htmlFor="pdf-upload-input">
           <Box
