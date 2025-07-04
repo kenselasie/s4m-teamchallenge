@@ -111,6 +111,7 @@ class TestSimpleCoverage:
             result = service.delete_pdf(1)
             assert result is False
     
+    
     def test_pdf_service_split_text_short(self, test_db):
         """Test splitting short text."""
         service = PDFService(test_db)
@@ -170,7 +171,19 @@ class TestSimpleCoverage:
         assert pdf.file_size_mb == 1.0
         assert pdf.is_processed is False  # Default status is pending
         
-
+    def test_pdf_chunk_methods(self, test_db):
+        """Test PDF chunk methods."""
+        from app.models.pdf_chunk import PDFChunk
+        chunk = PDFChunk(
+            pdf_id=1,
+            chunk_number=1,
+            page_number=1,
+            content="This is test content with multiple words",
+            word_count=7,
+            character_count=40
+        )
+        assert chunk.word_count == 7
+        assert chunk.character_count == 40
     
     def test_database_functions(self, test_db):
         """Test database utility functions."""

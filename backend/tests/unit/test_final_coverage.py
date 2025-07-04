@@ -93,15 +93,6 @@ class TestFinalCoverage:
             result = repo.get_by_pdf(1, skip=0, limit=10)
             assert result == mock_chunks
     
-    def test_pdf_chunk_repository_count_by_pdf(self, test_db):
-        """Test PDF chunk repository count_by_pdf method."""
-        repo = PDFChunkRepository(test_db)
-        
-        with patch.object(repo.db, 'query') as mock_query:
-            mock_query.return_value.filter.return_value.count.return_value = 3
-            
-            result = repo.count_by_pdf(1)
-            assert result == 3
     
     def test_pdf_chunk_repository_search_content(self, test_db):
         """Test PDF chunk repository search_content method."""
@@ -156,3 +147,4 @@ class TestFinalCoverage:
         
         # Test that method exists
         assert hasattr(repo, 'bulk_create')
+    

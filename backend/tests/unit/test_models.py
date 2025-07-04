@@ -249,3 +249,4 @@ class TestPDFChunkModel:
         preview = chunk.preview
         assert preview == "Short content"
         assert "..." not in preview
+    

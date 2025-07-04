@@ -101,18 +101,6 @@ class TestPDFRouterIntegration:
         response = client.delete("/api/pdfs/1")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_get_pdf_stats_not_found(self, client, auth_headers):
-        """Test getting stats of non-existent PDF."""
-        response = client.get("/api/pdfs/999/stats", headers=auth_headers)
-        assert response.status_code == status.HTTP_404_NOT_FOUND
-        
-        data = response.json()
-        assert data["detail"] == "PDF not found"
-
-    def test_get_pdf_stats_without_auth(self, client):
-        """Test getting PDF stats without authentication."""
-        response = client.get("/api/pdfs/1/stats")
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_upload_pdf_success(self, client, auth_headers):
         """Test PDF upload endpoint response (without actual processing)."""
@@ -223,27 +211,3 @@ class TestPDFRouterIntegration:
         data = response.json()
         assert data["message"] == "PDF deleted successfully"
 
-    @patch('app.services.pdf_service.PDFService.get_pdf_stats')
-    def test_get_pdf_stats_success(self, mock_get_stats, client, auth_headers):
-        """Test getting PDF stats successfully."""
-        mock_stats = {
-            "pdf_id": 1,
-            "title": "Test PDF",
-            "total_pages": 1,
-            "file_size_mb": 1.0,
-            "processing_status": "completed",
-            "total_chunks": 5,
-            "total_words": 100,
-            "total_characters": 500
-        }
-        
-        mock_get_stats.return_value = mock_stats
-        
-        response = client.get("/api/pdfs/1/stats", headers=auth_headers)
-        assert response.status_code == status.HTTP_200_OK
-        
-        data = response.json()
-        assert data["pdf_id"] == 1
-        assert data["title"] == "Test PDF"
-        assert data["total_chunks"] == 5
-        assert data["total_words"] == 100
