@@ -22,6 +22,10 @@ def test_db():
     Base.metadata.create_all(bind=engine)
     try:
         db = TestingSessionLocal()
+        # Create demo user in test database
+        from app.services.auth_service import AuthService
+        auth_service = AuthService(db)
+        auth_service.create_demo_user()
         yield db
     finally:
         db.close()

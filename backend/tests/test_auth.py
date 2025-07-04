@@ -36,5 +36,8 @@ def test_protected_route_with_token(client, auth_headers):
     response = client.get("/protected", headers=auth_headers)
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
-    assert "message" in data
-    assert data["user"] == "demo@example.com" 
+    assert "id" in data
+    assert "username" in data
+    assert "is_active" in data
+    assert data["username"] == "demo@example.com"
+    assert data["is_active"] == True 
